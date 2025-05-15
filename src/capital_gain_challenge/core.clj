@@ -1,4 +1,5 @@
 (ns capital-gain-challenge.core
+  (:gen-class)
   (:require [capital-gain-challenge.controllers.console :as console]))
 
 
@@ -7,4 +8,6 @@
 ;;       m2 (l/new-pondered-average 5 10 5 m)]
 ;;   (println m2))
 
-(console/start-console)
+
+(defn -main [& args]
+  (console/start-console))

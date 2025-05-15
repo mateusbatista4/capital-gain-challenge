@@ -20,8 +20,18 @@
 
 (s/defn new-accumulated-loss
   [profit
-   current-accumulated-loss]
-  (Math/abs (- profit current-accumulated-loss)))
+   current-accumulated-loss
+   quantity
+   price]
+  (let [operation-amount (* quantity price)]
+    (if (and (> profit 0) (<= operation-amount 20000))
+      current-accumulated-loss
+      (if (< profit 0)
+        (+ current-accumulated-loss (- profit))
+        (if (>= profit current-accumulated-loss)
+          0
+          (Math/abs (- profit current-accumulated-loss)))))))
+
 
 (s/defn profit
   [sell-price
@@ -37,7 +47,8 @@
 (s/defn tax-amount
   [profit
    accumulated-loss
-   sell-price sell-quantity]
+   sell-price
+   sell-quantity]
   (let [final-profit (max 0 (if (> accumulated-loss 0)  (- profit accumulated-loss) profit))
         sell-passes-limit-value (sell-passes-limit-value? sell-price sell-quantity)]
     (if sell-passes-limit-value (* final-profit 0.2) 0)))
