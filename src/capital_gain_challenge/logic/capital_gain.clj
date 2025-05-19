@@ -49,6 +49,6 @@
    accumulated-loss
    sell-price
    sell-quantity]
-  (let [final-profit (max 0 (if (> accumulated-loss 0)  (- profit accumulated-loss) profit))
+  (let [final-profit (max 0.0 (if (> accumulated-loss 0)  (- profit accumulated-loss) profit))
         sell-passes-limit-value (sell-passes-limit-value? sell-price sell-quantity)]
-    (if sell-passes-limit-value (* final-profit 0.2) 0)))
+    (if sell-passes-limit-value (* final-profit 0.2) 0.0)))

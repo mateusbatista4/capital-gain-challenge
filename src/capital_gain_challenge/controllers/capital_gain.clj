@@ -15,7 +15,7 @@
     (swap! wallet (fn [w] (-> w
                               (assoc :average-price new-weighted-average)
                               (assoc :quantity new-stocks-quantity))))
-    {:tax 0}))
+    {:tax 0.0}))
 
 (s/defn sell-stocks!
   [wallet :- models/Wallet
