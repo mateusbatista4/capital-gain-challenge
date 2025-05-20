@@ -1,10 +1,11 @@
-(ns capital-gain-challenge.core-test
+(ns capital-gain-challenge.cg-controller-test
   (:require
    [capital-gain-challenge.controllers.capital-gain :as cg-controller]
    [capital-gain-challenge.core :refer :all]
    [capital-gain-challenge.models.capital-gain :as models]
    [clojure.test :refer :all]))
 
+;; Replying the readme.md test cases
 
 (deftest testcase-1
   (testing "Returns correct taxes"

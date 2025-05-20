@@ -39,7 +39,6 @@
 (s/defn process-orders!
   [wallet :- models/Wallet
    orders :- models/UserInput]
-  
   (let [results (atom [])]
     (doseq [item orders]
       (let [operation-type (:operation item)
