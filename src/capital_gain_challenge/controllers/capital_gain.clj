@@ -21,20 +21,18 @@
   [wallet :- models/Wallet
    quantity :- s/Int
    price :- s/Num]
-  (if (logic/operation-allowed? (:quantity @wallet) quantity)
-    (let [current-weighted-average (:average-price @wallet)
-          current-stocks-quantity (:quantity @wallet)
-          current-accumulated-loss (:accumulated-loss @wallet)
-          profit (logic/profit price quantity current-weighted-average)
-          new-stocks-quantity (- current-stocks-quantity quantity)
-          tax-amount (logic/tax-amount profit current-accumulated-loss price quantity)
-          new-accumulated-loss (logic/new-accumulated-loss profit current-accumulated-loss quantity price)]
-      
-      (swap! wallet (fn [w] (-> w
-                                (assoc :quantity new-stocks-quantity)
-                                (assoc :accumulated-loss new-accumulated-loss))))
-      {:tax tax-amount})
-    (throw (Exception. "Cannot sell this stocks quantity."))))
+  (let [current-weighted-average (:average-price @wallet)
+        current-stocks-quantity (:quantity @wallet)
+        current-accumulated-loss (:accumulated-loss @wallet)
+        profit (logic/profit price quantity current-weighted-average)
+        new-stocks-quantity (- current-stocks-quantity quantity)
+        tax-amount (logic/tax-amount profit current-accumulated-loss price quantity)
+        new-accumulated-loss (logic/new-accumulated-loss profit current-accumulated-loss quantity price)]
+
+    (swap! wallet (fn [w] (-> w
+                              (assoc :quantity new-stocks-quantity)
+                              (assoc :accumulated-loss new-accumulated-loss))))
+    {:tax tax-amount}))
 
 (s/defn process-orders!
   [wallet :- models/Wallet

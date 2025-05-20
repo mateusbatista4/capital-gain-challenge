@@ -2,6 +2,7 @@
   (:require
    [schema.core :as s]))
 
+
 (s/defn buy?
   [order]
   (= order "buy"))

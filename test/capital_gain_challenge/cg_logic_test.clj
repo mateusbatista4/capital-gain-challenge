@@ -47,7 +47,7 @@
 
 (deftest test-profit
   (testing "Positive profit"
-    (is (= 1000.0 (cg-logic/profit 50.0 10 40.0))))  ; 500 - 400
+    (is (= 100.0 (cg-logic/profit 50.0 10 40.0))))  ; 500 - 400
 
   (testing "Zero profit"
     (is (= 0.0 (cg-logic/profit 50.0 10 50.0))))     ; 500 - 500
