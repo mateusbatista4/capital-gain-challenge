@@ -9,8 +9,8 @@
   [UserOrder])
 
 (def Wallet 
-  {:average-price s/Num :quantity s/Int :accumulated-loss s/Num})
+  {:average-price s/Num :quantity s/Int :accumulated-loss s/Num :error-count s/Int})
 
 (s/defn new-wallet :- Wallet
   []
-  {:average-price 0 :quantity 0 :accumulated-loss 0})
+  {:average-price 0 :quantity 0 :accumulated-loss 0 :error-count 0})

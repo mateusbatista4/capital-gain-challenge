@@ -1,5 +1,5 @@
 (ns capital-gain-challenge.cg-logic-test
-  (:require 
+  (:require
    [capital-gain-challenge.logic.capital-gain :as cg-logic]
    [clojure.test :refer :all]))
 
@@ -9,7 +9,7 @@
 (deftest test-new-weighted-average
   (testing "New Weighted Average function"
     (let [m (cg-logic/new-weighted-average 10 20 0 0)
-           m2 (cg-logic/new-weighted-average 5 10 5 m)]
+          m2 (cg-logic/new-weighted-average 5 10 5 m)]
       (is (= m2 15)))))
 
 

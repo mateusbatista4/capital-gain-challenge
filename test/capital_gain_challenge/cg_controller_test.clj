@@ -107,5 +107,47 @@
           taxes (cg-controller/process-orders! wallet orders)]
       (is (= [{:tax 0.0} {:tax 0.0} {:tax 0.0} {:tax 0.0} {:tax 0.0} {:tax 0.0} {:tax 1000.0} {:tax 2400.0}] taxes)))))
 
+(deftest testcase-10
+  (testing "Returns correct taxes "
+    (let [wallet (atom (models/new-wallet))
+          orders [{:operation "buy" :unit-cost 10 :quantity 10000}
+                  {:operation "sell" :unit-cost 20 :quantity 11000}]
+          taxes (cg-controller/process-orders! wallet orders)]
+      (is (= [{:tax 0.0} {:error "Can't sell more stocks than you have"}] taxes)))))
 
+(deftest testcase-11
+  (testing "Returns correct taxes and cannot sell more stocks than you have"
+    (let [wallet (atom (models/new-wallet))
+          orders [{:operation "buy" :unit-cost 10 :quantity 10000}
+                  {:operation "sell" :unit-cost 20 :quantity 11000}
+                  {:operation "sell" :unit-cost 20 :quantity 5000}]
+          taxes (cg-controller/process-orders! wallet orders)]
+      (is (= [{:tax 0.0} {:error "Can't sell more stocks than you have"} {:tax 10000.0}] taxes)))))
 
+(deftest testcase-12
+  (testing "Successfully blocks account after 3 errors"
+    (let [wallet (atom (models/new-wallet))
+          orders [{:operation "sell" :unit-cost 20 :quantity 10000}
+                  {:operation "sell" :unit-cost 20 :quantity 10000}
+                  {:operation "sell" :unit-cost 20 :quantity 1000}
+                  {:operation "buy" :unit-cost 10 :quantity 10000}]
+          taxes (cg-controller/process-orders! wallet orders)]
+      (is (= [{:error "Can't sell more stocks than you have"}
+              {:error "Can't sell more stocks than you have"}
+              {:error "Can't sell more stocks than you have"}
+              {:error "Your account is blocked"}] taxes)))))
+
+(deftest testcase-13
+  (testing "Returns correct taxes after account unblocks"
+    (let [wallet (atom (models/new-wallet))
+          orders [{:operation "sell" :unit-cost 20 :quantity 10000}
+                  {:operation "sell" :unit-cost 20 :quantity 10000}
+                  {:operation "buy" :unit-cost 10 :quantity 5000}
+                  {:operation "sell" :unit-cost 20 :quantity 10000}
+                  {:operation "buy" :unit-cost 10 :quantity 5000}]
+          taxes (cg-controller/process-orders! wallet orders)]
+      (is (= [{:error "Can't sell more stocks than you have"}
+              {:error "Can't sell more stocks than you have"}
+              {:tax 0.0}
+              {:error "Can't sell more stocks than you have"}
+              {:tax 0.0}] taxes)))))

@@ -1,11 +1,19 @@
 (ns capital-gain-challenge.logic.capital-gain
   (:require
+   [capital-gain-challenge.models.capital-gain :as models]
    [schema.core :as s]))
 
 
 (s/defn buy?
   [order]
   (= order "buy"))
+
+(s/defn wallet-blocked? [wallet :- models/Wallet]
+  (>= (:error-count wallet) 3))
+
+(s/defn operation-allowed? 
+  [current-stocks-quantity quantity]
+  (>= current-stocks-quantity quantity))
 
 (s/defn new-weighted-average
   [buy-quantity :- s/Int
