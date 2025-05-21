@@ -7,11 +7,6 @@
   [order]
   (= order "buy"))
 
-(s/defn operation-allowed?
-  [current-stocks-quantity
-   quantity]
-  (>= current-stocks-quantity quantity))
-
 (s/defn new-weighted-average
   [buy-quantity :- s/Int
    buy-price :- s/Num

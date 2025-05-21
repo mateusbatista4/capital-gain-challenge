@@ -7,16 +7,10 @@
 
 (s/defn read-json-from-keyboard :- m/UserInput
   "Funcion responsible for read json orders from keyboard as the example bellow"
-  ;; [{"operation":"buy", "unit-cost":10.00, "quantity": 10000}, {"operation":"sell", "unit-cost":20.00, "quantity": 5000}]
-  ;; 
   []
   (println "Enter JSON orders (all on one line):")
   (let [input (read-line)]
-    (try
-      (c-logic/json-string->user-input input)
-      (catch Exception e
-        (println "Error parsing JSON input:" (.getMessage e))
-        []))))
+    (c-logic/json-string->user-input input)))
 
 
 (s/defn start-console

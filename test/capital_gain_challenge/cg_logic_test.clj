@@ -65,3 +65,34 @@
     (is (= 123456.7 (cg-logic/profit 1234.567 100 0.0)))))
 
 
+(deftest test-new-accumulated-loss
+  (testing "Positive profit with operation amount <= 20000 (no loss update)"
+    (is (= 500.0 (cg-logic/new-accumulated-loss 1000.0 500.0 100 200.0)))) ; 20,000, edge case: still allowed
+
+  (testing "Positive profit with operation amount > 20000 (may reduce loss)"
+    (is (= 0 (cg-logic/new-accumulated-loss 1000.0 500.0 101 200.0))))   ; op-amount = 20200
+
+  (testing "Profit is less than accumulated loss (partial offset)"
+    (is (= 400.0 (cg-logic/new-accumulated-loss 100.0 500.0 101 200.0))))  ; 500 - 100
+
+  (testing "Profit equals accumulated loss (offset to zero)"
+    (is (= 0 (cg-logic/new-accumulated-loss 500.0 500.0 101 200.0))))
+
+  (testing "Negative profit increases accumulated loss"
+    (is (= 800.0 (cg-logic/new-accumulated-loss -300.0 500.0 100 100.0)))) ; 500 + 300
+
+  (testing "Zero profit with operation amount > 20000"
+    (is (= 500.0 (cg-logic/new-accumulated-loss 0.0 500.0 101 200.0))))    ; No change since profit not negative
+
+  (testing "Edge case: operation amount = 20000 exactly"
+    (is (= 200.0 (cg-logic/new-accumulated-loss 100.0 200.0 100 200.0))))  ; No change
+
+  (testing "Edge case: zero accumulated loss"
+    (is (= 300.0 (cg-logic/new-accumulated-loss -300.0 0.0 50 10.0))))     ; New loss = 300
+
+  (testing "Profit exactly cancels accumulated loss"
+    (is (= 0 (cg-logic/new-accumulated-loss 500.0 500.0 101 200.0))))
+
+  (testing "Profit smaller than accumulated loss, operation over limit"
+    (is (= 250.0 (cg-logic/new-accumulated-loss 250.0 500.0 101 200.0))))  ; |250 - 500| = 250
+  )
