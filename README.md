@@ -7,6 +7,7 @@ A solução foi projetada para ser simples e eficiente, utilizando uma abordagem
 - **Arquitetura Diplomata**: Inspirada na arquitetura do Nubank, a solução separa claramente as responsabilidades entre:
   - **Controllers**: Funções não puras responsáveis por interações externas, como entrada e saída de dados.
   - **Logic**: Funções puras que contêm as regras de negócio, garantindo maior testabilidade e previsibilidade.
+  - **Diplomatas**: Funções para acessos a outros serviços - no caso deste desafio, não temos nenhum.
 - **Processamento em Memória**: Todas as operações são processadas em memória como solicitado, utilizando os atomos do Clojure.
 
 ## Justificativa para o Uso de Frameworks ou Bibliotecas
